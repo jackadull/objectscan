@@ -6,6 +6,26 @@ Internally, it uses [FastClasspathScanner](https://github.com/lukehutch/fast-cla
 However, this is an implementation detail which may change in future versions, or it may not change.
 Users of `objectscan` should only use the simple interface which it exposes to the outside world, and not rely on any implementation specifics.
 
+## Dependency management and compatibility
+
+`objectscan` is compatible with Scala 2.12.
+Best effort is made to always keep it up-to-date with the latest Scala version.
+
+Cross-versioning will not be supplied.
+When a new Scala version is released, your code should be updated to that version as soon as possible anyways.
+
+### SBT
+
+    libraryDependencies += "net.jackadull" %% "objectscan" % "0.1.1"
+
+### Maven
+
+    <dependency>
+      <groupId>net.jackadull</groupId>
+      <artifactId>objectscan_2.12</artifactId>
+      <version>0.1.1</version>
+    </dependency>
+
 ## Use cases
 
 Use of this utility library is somewhat limited.

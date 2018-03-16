@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>net.jackadull</groupId>
-  <artifactId>objectscan</artifactId>
-  <version>0.1</version>
+  <artifactId>objectscan_2.12</artifactId>
+  <version>0.1.1</version>
 
-  <name>${project.artifactId}</name>
+  <name>objectscan</name>
   <description>Small utility library for quick classpath scans, finding singleton instances.</description>
   <url>https://github.com/jackadull/objectscan</url>
 
@@ -40,9 +40,11 @@
     <version.dependency.scalatest>3.0.5</version.dependency.scalatest>
     <version.jvm.source>1.9</version.jvm.source>
     <version.jvm.target>1.9</version.jvm.target>
-    <version.language.scala>${version.language.scala.major}.${version.language.scala.minor}</version.language.scala>
-    <version.language.scala.major>2.12</version.language.scala.major>
-    <version.language.scala.minor>4</version.language.scala.minor>
+    <version.language.scala>${version.language.scala.major}.${version.language.scala.minor}.${version.language.scala.patch}</version.language.scala>
+    <version.language.scala.compat>${version.language.scala.major}.${version.language.scala.minor}</version.language.scala.compat>
+    <version.language.scala.patch>4</version.language.scala.patch>
+    <version.language.scala.major>2</version.language.scala.major>
+    <version.language.scala.minor>12</version.language.scala.minor>
     <version.plugin.gpg>1.5</version.plugin.gpg>
     <version.plugin.nexus-staging>1.6.7</version.plugin.nexus-staging>
     <version.plugin.scala>3.3.1</version.plugin.scala>
@@ -64,13 +66,13 @@
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
-      <artifactId>scala-xml_${version.language.scala.major}</artifactId>
+      <artifactId>scala-xml_${version.language.scala.compat}</artifactId>
       <version>${version.dependency.scala-xml}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_${version.language.scala.major}</artifactId>
+      <artifactId>scalatest_${version.language.scala.compat}</artifactId>
       <version>${version.dependency.scalatest}</version>
       <scope>test</scope>
     </dependency>
