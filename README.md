@@ -16,14 +16,14 @@ When a new Scala version is released, your code should be updated to that versio
 
 ### SBT
 
-    libraryDependencies += "net.jackadull" %% "objectscan" % "0.1.1"
+    libraryDependencies += "net.jackadull" %% "objectscan" % "0.2.0"
 
 ### Maven
 
     <dependency>
       <groupId>net.jackadull</groupId>
       <artifactId>objectscan_2.12</artifactId>
-      <version>0.1.1</version>
+      <version>0.2.0</version>
     </dependency>
 
 ## Use cases
