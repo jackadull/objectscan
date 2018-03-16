@@ -3,13 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>net.jackadull</groupId>
   <artifactId>objectscan_2.12</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
 
   <name>objectscan</name>
   <description>Small utility library for quick classpath scans, finding singleton instances.</description>
   <url>https://github.com/jackadull/objectscan</url>
+
+  <parent>
+    <groupId>net.jackadull</groupId>
+    <artifactId>scala-parent_2.12</artifactId>
+    <version>1.0.0</version>
+  </parent>
 
   <licenses>
     <license>
@@ -34,23 +39,7 @@
   </scm>
 
   <properties>
-    <encoding>UTF-8</encoding>
     <version.depedency.fast-classpath-scanner>2.18.1</version.depedency.fast-classpath-scanner>
-    <version.dependency.scala-xml>1.1.0</version.dependency.scala-xml>
-    <version.dependency.scalatest>3.0.5</version.dependency.scalatest>
-    <version.jvm.source>1.9</version.jvm.source>
-    <version.jvm.target>1.9</version.jvm.target>
-    <version.language.scala>${version.language.scala.major}.${version.language.scala.minor}.${version.language.scala.patch}</version.language.scala>
-    <version.language.scala.compat>${version.language.scala.major}.${version.language.scala.minor}</version.language.scala.compat>
-    <version.language.scala.patch>4</version.language.scala.patch>
-    <version.language.scala.major>2</version.language.scala.major>
-    <version.language.scala.minor>12</version.language.scala.minor>
-    <version.plugin.gpg>1.5</version.plugin.gpg>
-    <version.plugin.nexus-staging>1.6.7</version.plugin.nexus-staging>
-    <version.plugin.scala>3.3.1</version.plugin.scala>
-    <version.plugin.scalatest>2.0.0</version.plugin.scalatest>
-    <version.plugin.source>2.2.1</version.plugin.source>
-    <version.plugin.surefire>2.20.1</version.plugin.surefire>
   </properties>
 
   <dependencies>
@@ -59,128 +48,5 @@
       <artifactId>fast-classpath-scanner</artifactId>
       <version>${version.depedency.fast-classpath-scanner}</version>
     </dependency>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${version.language.scala}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang.modules</groupId>
-      <artifactId>scala-xml_${version.language.scala.compat}</artifactId>
-      <version>${version.dependency.scala-xml}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_${version.language.scala.compat}</artifactId>
-      <version>${version.dependency.scalatest}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>net.alchim31.maven</groupId>
-        <artifactId>scala-maven-plugin</artifactId>
-        <version>${version.plugin.scala}</version>
-        <configuration>
-          <source>${version.jvm.source}</source>
-          <target>${version.jvm.target}</target>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-              <goal>add-source</goal>
-              <goal>doc-jar</goal>
-            </goals>
-            <configuration>
-              <args>
-                <arg>-deprecation</arg>
-                <arg>-feature</arg>
-              </args>
-              <scalaVersion>${version.language.scala}</scalaVersion>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>${version.plugin.gpg}</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>${version.plugin.source}</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${version.plugin.surefire}</version>
-        <configuration>
-          <skipTests>true</skipTests>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.scalatest</groupId>
-        <artifactId>scalatest-maven-plugin</artifactId>
-        <version>${version.plugin.scalatest}</version>
-        <configuration>
-          <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-          <junitxml>.</junitxml>
-          <filereports>WDF TestSuite.txt</filereports>
-        </configuration>
-        <executions>
-          <execution>
-            <id>test</id>
-            <goals>
-              <goal>test</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>${version.plugin.nexus-staging}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>false</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
 </project>
