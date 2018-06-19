@@ -42,6 +42,4 @@ private[objectscan] class SourceScanningImpl(allOnClasspath:All) extends All {
       val seen2 = seen ++ immediateSupers
       immediateSupers ++ (immediateSupers flatMap {s ⇒ allParentTypes(s, seen2)})
     }
-
-  // TODO toString
 }

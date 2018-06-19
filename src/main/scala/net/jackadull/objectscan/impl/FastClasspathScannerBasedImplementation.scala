@@ -7,12 +7,11 @@ import scala.collection.JavaConverters.asScalaBuffer
 import scala.reflect.ClassTag
 
 private[objectscan] class FastClasspathScannerBasedImplementation(packagePrefixes:Seq[String]) extends All {
-  // TODO a cache would greatly help here (or a smarter tree structure)
   def of[A](implicit tag:ClassTag[A]) = {
     val scanResult = new FastClasspathScanner(packagePrefixes:_*).scan
     val cls = tag.runtimeClass
     val candidateNames:Seq[String] = asScalaBuffer(
-      scanResult.getNamesOfAllClasses // TODO too many results
+      scanResult.getNamesOfAllClasses
       //if(cls isInterface) scanResult.getNamesOfClassesImplementing(cls) else scanResult.getNamesOfSubclassesOf(cls)
     ).toList
     def loadClassOpt(className:String):Option[Class[_]] =
@@ -34,5 +33,4 @@ private[objectscan] class FastClasspathScannerBasedImplementation(packagePrefixe
   }
 
   protected def useClass(cls:Class[_]):Boolean = true
-  // TODO toString
 }
