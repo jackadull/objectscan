@@ -40,6 +40,8 @@
 
   <properties>
     <version.depedency.fast-classpath-scanner>2.18.1</version.depedency.fast-classpath-scanner>
+    <version.plugin.coveralls>4.3.0</version.plugin.coveralls>
+    <version.plugin.jacoco>0.8.1</version.plugin.jacoco>
   </properties>
 
   <dependencies>
@@ -55,6 +57,38 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>${version.plugin.coveralls}</version>
+        <configuration>
+          <repoToken>${env.repoToken}</repoToken>
+          <sourceDirectories>
+            <sourceDirectory>src/main/scala</sourceDirectory>
+            <sourceDirectory>${project.build.directory}/generated-sources/java-templates</sourceDirectory>
+          </sourceDirectories>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${version.plugin.jacoco}</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

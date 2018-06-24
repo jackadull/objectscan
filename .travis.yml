@@ -6,3 +6,9 @@ addons:
   apt:
     packages:
       - oracle-java9-installer
+install:
+  - mvn test-compile -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script:
+  - mvn test jacoco:report
+after_success:
+  - mvn coveralls:report
