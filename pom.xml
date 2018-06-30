@@ -38,6 +38,11 @@
     <url>https://github.com/jackadull/objectscan</url>
   </scm>
 
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/orgs/jackadull/projects/1</url>
+  </issueManagement>
+
   <properties>
     <version.depedency.fast-classpath-scanner>2.18.1</version.depedency.fast-classpath-scanner>
     <version.plugin.coveralls>4.3.0</version.plugin.coveralls>
