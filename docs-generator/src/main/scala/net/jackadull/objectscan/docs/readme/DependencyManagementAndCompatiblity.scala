@@ -22,7 +22,7 @@ object DependencyManagementAndCompatiblity extends Chapter {
   override def subChapters = Seq(
     Chapter("sbt", "SBT",
 <pre><code class="language-scala">
-libraryDependencies += "net.jackadull" %% "objectscan" % "{ObjectscanInfo Version}"
+libraryDependencies += "net.jackadull" %% "objectscan" % "{ObjectscanInfo version}"
 </code></pre>
     ),
     Chapter("maven", "Maven",
@@ -30,7 +30,7 @@ libraryDependencies += "net.jackadull" %% "objectscan" % "{ObjectscanInfo Versio
 {<dependency>
   <groupId>net.jackadull</groupId>
   <artifactId>objectscan_2.12</artifactId>
-  <version>{ObjectscanInfo Version}</version>
+  <version>{ObjectscanInfo version}</version>
 </dependency> toString}
 </code></pre>
     )

@@ -1,14 +1,17 @@
 package net.jackadull.objectscan.docs.readme
 
-import net.jackadull.jackadocs.structure.Chapter
+import net.jackadull.jackadocs.structure.badges.BadgeGenerators
+import net.jackadull.jackadocs.structure.{Chapter, DocsMetaData}
+import net.jackadull.objectscan.docs.Main
 
 import scala.language.postfixOps
 
-object ReadmeRoot extends Chapter {
+object ReadmeRoot extends Chapter with BadgeGenerators {
   def id = "objectscan"
   def title = "Objectscan"
 
   def contents =
+<p>{travisCIBadge} {mavenCentralBadge} {coverallsBadge} {codeFactorBadge} {snykBadge}</p>
 <p>
   A small utility library for quickly finding all singleton instances of a given type, including subtypes.
 </p>
@@ -19,4 +22,6 @@ object ReadmeRoot extends Chapter {
 </p>
 
   override def subChapters:Seq[Chapter] = Seq(DependencyManagementAndCompatiblity, UseCases, Usage)
+
+  def docsMetaData:DocsMetaData = Main
 }
