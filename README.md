@@ -1,4 +1,6 @@
 # Objectscan
+[![Travis CI](https\:\/\/travis\-ci\.org\/jackadull\/objectscan\.svg)](https\:\/\/travis\-ci\.org\/jackadull\/objectscan) [![Maven Central](https\:\/\/img\.shields\.io\/maven\-central\/v\/net\.jackadull\/objectscan\_2\.12\.svg)](https\:\/\/search\.maven\.org\/\#search\%7Cga\%7C1\%7Cg\%3A\%22net\.jackadull\%22\%20AND\%20a\%3A\%22objectscan\_2\.12\%22) [![Coveralls](https\:\/\/coveralls\.io\/repos\/github\/jackadull\/objectscan\/badge\.svg)](https\:\/\/coveralls\.io\/github\/jackadull\/objectscan) [![Codefactor](https\:\/\/www\.codefactor\.io\/repository\/github\/jackadull\/objectscan\/badge)](https\:\/\/www\.codefactor\.io\/repository\/github\/jackadull\/objectscan) [![Snyk](https\:\/\/snyk\.io\/test\/github\/jackadull\/objectscan\/badge\.svg)](https\:\/\/snyk\.io\/test\/github\/jackadull\/objectscan)
+
 A small utility library for quickly finding all singleton instances of a given type\, including subtypes\.
 
 Internally\, it uses [`FastClasspathScanner`](https\:\/\/github\.com\/lukehutch\/fast\-classpath\-scanner) for performing top\-speed classpath scans\. However\, this is an implementation detail which may change in future versions\, or it may not change\. Users of Objectscan should only use the simple interface which it exposes to the outside world\, and not rely on any implementation specifics\.
@@ -10,14 +12,14 @@ Cross\-versioning will not be supported\. When a new Scala version is released\,
 
 ### SBT
 ```scala
-libraryDependencies += "net.jackadull" %% "objectscan" % "0.3.1"
+libraryDependencies += "net.jackadull" %% "objectscan" % "0.3.3-SNAPSHOT"
 ```
 ### Maven
 ```xml
 <dependency>
   <groupId>net.jackadull</groupId>
   <artifactId>objectscan_2.12</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.3-SNAPSHOT</version>
 </dependency>
 ```
 ## Use Cases
