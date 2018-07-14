@@ -12,14 +12,13 @@
   <parent>
     <groupId>net.jackadull</groupId>
     <artifactId>scala-parent_2.12</artifactId>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <relativePath></relativePath>
   </parent>
 
   <properties>
     <version.dependency.jackadocs>0.3.0</version.dependency.jackadocs>
     <version.dependency.objectscan>0.3.3-SNAPSHOT</version.dependency.objectscan>
-    <version.plugin.exec-maven-plugin>1.1.1</version.plugin.exec-maven-plugin>
   </properties>
 
   <dependencies>
@@ -44,7 +43,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>${version.plugin.exec-maven-plugin}</version>
         <configuration>
           <mainClass>net.jackadull.objectscan.docs.Main</mainClass>
           <arguments>
