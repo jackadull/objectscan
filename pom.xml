@@ -45,8 +45,6 @@
 
   <properties>
     <version.depedency.fast-classpath-scanner>2.18.1</version.depedency.fast-classpath-scanner>
-    <version.plugin.coveralls>4.3.0</version.plugin.coveralls>
-    <version.plugin.jacoco>0.8.1</version.plugin.jacoco>
   </properties>
 
   <dependencies>
