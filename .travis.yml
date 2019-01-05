@@ -5,18 +5,22 @@ jdk: oraclejdk9
 addons:
   apt:
     packages:
-      - oracle-java9-installer
+    - oracle-java9-installer
 cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/apache-maven-3.5.4"
 before_install:
 - export M2_HOME=$HOME/apache-maven-3.5.4
-- if [ ! -d $M2_HOME/bin ]; then curl https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz | tar zxf - -C $HOME; fi
+- if [ ! -d $M2_HOME/bin ]; then curl https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+  | tar zxf - -C $HOME; fi
 - export PATH=$M2_HOME/bin:$PATH
 install:
-  - mvn -P jackadull-ci test-compile -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn -P jackadull-ci test-compile -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
-  - mvn -P jackadull-ci test jacoco:report
+- mvn -P jackadull-ci test jacoco:report
 after_success:
-  - mvn -P jackadull-ci coveralls:report
+- mvn -P jackadull-ci coveralls:report
+env:
+  global:
+    secure: VY8CcVl9kZ2eqHoGPcP3gNoZcbgReswWEHNJ0bOS0gqtAc506WLv8/1/wOyacJfzqGJaCOxtVVx9deOtZtSJM/xCPemDwI2jk7LVQtPBevyGkiwRuyR+HXy5mN9jW6LjwnVNIM8o0Oaosz4xbRk9GLMG+BsAGISnSqwNS0ZPPQ8dy7XT0PcpPN4TI1v9UFNve8N2pyAnQxnCd9XXse5jy7QSL2T5H7mueKmlUo1DOQw6Hqc72vC6mOG/0jRCFyuCxQrpPs+ggxTEyZFLzIj6Be4V5+BDRYADUALTvwLvgXZ8GF5iKFfz0iT9CYkuABGHzj6jzbXzmuTAhcCuAvaEGz6bNNG/QEQ246NNWiHDW6mJyQ4txmc8DIF0FnpXDq86km7jtJC/5vJI9WjOrFX99bZ5q7Ec+NiaOsfuL/t9Exo2CYpvt2m9Oz+NtEu1PSXpl7RWFgFKQwyQR1miZoYrhNr1/V2cNkRHvp4Pnu5XQIs5J+/4Kq+f4o39MQJn5OnVMxzcjYzE75SK2VrsrzLSgPXbH6YyDD91LQGXEYxDWs1vIMmb4p43I+48ujUmUEgKha626eNmeUm5ILsN+HfwD8/05LHBAgWqD8NKUFW44TVhgHcuc34cOoe2B+fqIjqg5x9LBeOQEBnxCjOXEaaZgkRWhQF7biWMwhUluMMdGBA=
