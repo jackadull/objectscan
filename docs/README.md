@@ -12,14 +12,14 @@ Cross\-versioning will not be supported\. When a new Scala version is released\,
 
 ### SBT
 ```scala
-libraryDependencies += "net.jackadull" %% "objectscan" % "0.4.0-SNAPSHOT"
+libraryDependencies += "net.jackadull" %% "objectscan" % "0.4.0"
 ```
 ### Maven
 ```xml
 <dependency>
   <groupId>net.jackadull</groupId>
   <artifactId>objectscan_2.13</artifactId>
-  <version>0.4.0-SNAPSHOT</version>
+  <version>0.4.0</version>
 </dependency>
 ```
 ## Use cases

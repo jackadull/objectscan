@@ -6,8 +6,7 @@ cache:
   - $HOME/.cache/coursier
   - $HOME/.ivy2/cache
   - $HOME/.sbt
-before_install:
-- openssl aes-256-cbc -K $encrypted_f0ea53a01261_key -iv $encrypted_f0ea53a01261_iv -in project/deployment/secrets.tar.enc -out project/deployment/local.secrets.tar -d
+before_install: openssl aes-256-cbc -K $encrypted_f0ea53a01261_key -iv $encrypted_f0ea53a01261_iv -in project/deployment/secrets.tar.enc -out project/deployment/local.secrets.tar -d
 install: tar xv -C project/deployment -f project/deployment/local.secrets.tar
 script: if [[ "$TRAVIS_BRANCH" == 'release/latest' ]]; then echo 'Skipping build for release/latest branch.'; else sbt ci; fi
 before_cache:
