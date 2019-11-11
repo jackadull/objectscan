@@ -1,26 +1,19 @@
-language: java
-sudo: false
-dist: trusty
-jdk: oraclejdk9
-addons:
-  apt:
-    packages:
-    - oracle-java9-installer
+language: scala
+scala:
+- 2.13.1
 cache:
   directories:
-  - "$HOME/.m2/repository"
-  - "$HOME/apache-maven-3.5.4"
-before_install:
-- export M2_HOME=$HOME/apache-maven-3.5.4
-- if [ ! -d $M2_HOME/bin ]; then curl https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
-  | tar zxf - -C $HOME; fi
-- export PATH=$M2_HOME/bin:$PATH
-install:
-- mvn -P jackadull-ci test-compile -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-script:
-- mvn -P jackadull-ci test jacoco:report
-after_success:
-- mvn -P jackadull-ci coveralls:report
+  - $HOME/.cache/coursier
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt
+before_install: true
+install: tar xv -C project/deployment -f project/deployment/local.secrets.tar
+script: if [[ "$TRAVIS_BRANCH" == 'release/latest' ]]; then echo 'Skipping build for release/latest branch.'; else sbt ci; fi
+before_cache:
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+- find $HOME/.sbt -name "*.lock" -print -delete
+- rm -f $HOME/.ivy2/.sbt.ivy.lock
+after_success: if [[ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]] && [[ "$TRAVIS_TAG" =~ ^v([0-9]+)(\.[0-9]+\.){0,2}([-0-9a-zA-Z_\.\*]+)?$ ]] && [[ "$TRAVIS_TAG" != *-SNAPSHOT ]]; then git config --global user.email "bot@jackadull.net" && git config --global user.name "Jackadull-Bot" && prev_origin=$(git config --get remote.origin.url) && git remote rm origin && git remote add origin $(sed 's/:\/\//:\/\/jackadull-bot:'${GITHUB_TOKEN}'@/' <<< $prev_origin) && git push -f origin "$TRAVIS_TAG":release/latest && git tag -l "v*-SNAPSHOT" | xargs git push origin -d; fi
 env:
   global:
     secure: VY8CcVl9kZ2eqHoGPcP3gNoZcbgReswWEHNJ0bOS0gqtAc506WLv8/1/wOyacJfzqGJaCOxtVVx9deOtZtSJM/xCPemDwI2jk7LVQtPBevyGkiwRuyR+HXy5mN9jW6LjwnVNIM8o0Oaosz4xbRk9GLMG+BsAGISnSqwNS0ZPPQ8dy7XT0PcpPN4TI1v9UFNve8N2pyAnQxnCd9XXse5jy7QSL2T5H7mueKmlUo1DOQw6Hqc72vC6mOG/0jRCFyuCxQrpPs+ggxTEyZFLzIj6Be4V5+BDRYADUALTvwLvgXZ8GF5iKFfz0iT9CYkuABGHzj6jzbXzmuTAhcCuAvaEGz6bNNG/QEQ246NNWiHDW6mJyQ4txmc8DIF0FnpXDq86km7jtJC/5vJI9WjOrFX99bZ5q7Ec+NiaOsfuL/t9Exo2CYpvt2m9Oz+NtEu1PSXpl7RWFgFKQwyQR1miZoYrhNr1/V2cNkRHvp4Pnu5XQIs5J+/4Kq+f4o39MQJn5OnVMxzcjYzE75SK2VrsrzLSgPXbH6YyDD91LQGXEYxDWs1vIMmb4p43I+48ujUmUEgKha626eNmeUm5ILsN+HfwD8/05LHBAgWqD8NKUFW44TVhgHcuc34cOoe2B+fqIjqg5x9LBeOQEBnxCjOXEaaZgkRWhQF7biWMwhUluMMdGBA=
