@@ -1,26 +1,24 @@
-language: java
-sudo: false
-dist: trusty
-jdk: oraclejdk9
-addons:
-  apt:
-    packages:
-    - oracle-java9-installer
+language: scala
+scala:
+- 2.13.1
 cache:
   directories:
-  - "$HOME/.m2/repository"
-  - "$HOME/apache-maven-3.5.4"
+  - $HOME/.cache/coursier
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt
 before_install:
-- export M2_HOME=$HOME/apache-maven-3.5.4
-- if [ ! -d $M2_HOME/bin ]; then curl https://archive.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
-  | tar zxf - -C $HOME; fi
-- export PATH=$M2_HOME/bin:$PATH
-install:
-- mvn -P jackadull-ci test-compile -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-script:
-- mvn -P jackadull-ci test jacoco:report
-after_success:
-- mvn -P jackadull-ci coveralls:report
+- openssl aes-256-cbc -K $encrypted_f0ea53a01261_key -iv $encrypted_f0ea53a01261_iv -in project/deployment/secrets.tar.enc -out project/deployment/local.secrets.tar -d
+install: tar xv -C project/deployment -f project/deployment/local.secrets.tar
+script: if [[ "$TRAVIS_BRANCH" == 'release/latest' ]]; then echo 'Skipping build for release/latest branch.'; else sbt ci; fi
+before_cache:
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+- find $HOME/.sbt -name "*.lock" -print -delete
+- rm -f $HOME/.ivy2/.sbt.ivy.lock
+after_success: if [[ "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]] && [[ "$TRAVIS_TAG" =~ ^v([0-9]+)(\.[0-9]+\.){0,2}([-0-9a-zA-Z_\.\*]+)?$ ]] && [[ "$TRAVIS_TAG" != *-SNAPSHOT ]]; then git config --global user.email "bot@jackadull.net" && git config --global user.name "Jackadull-Bot" && prev_origin=$(git config --get remote.origin.url) && git remote rm origin && git remote add origin $(sed 's/:\/\//:\/\/jackadull-bot:'${GITHUB_TOKEN}'@/' <<< $prev_origin) && git push -f origin "$TRAVIS_TAG":release/latest && git tag -l "v*-SNAPSHOT" | xargs git push origin -d; fi
 env:
   global:
-    secure: VY8CcVl9kZ2eqHoGPcP3gNoZcbgReswWEHNJ0bOS0gqtAc506WLv8/1/wOyacJfzqGJaCOxtVVx9deOtZtSJM/xCPemDwI2jk7LVQtPBevyGkiwRuyR+HXy5mN9jW6LjwnVNIM8o0Oaosz4xbRk9GLMG+BsAGISnSqwNS0ZPPQ8dy7XT0PcpPN4TI1v9UFNve8N2pyAnQxnCd9XXse5jy7QSL2T5H7mueKmlUo1DOQw6Hqc72vC6mOG/0jRCFyuCxQrpPs+ggxTEyZFLzIj6Be4V5+BDRYADUALTvwLvgXZ8GF5iKFfz0iT9CYkuABGHzj6jzbXzmuTAhcCuAvaEGz6bNNG/QEQ246NNWiHDW6mJyQ4txmc8DIF0FnpXDq86km7jtJC/5vJI9WjOrFX99bZ5q7Ec+NiaOsfuL/t9Exo2CYpvt2m9Oz+NtEu1PSXpl7RWFgFKQwyQR1miZoYrhNr1/V2cNkRHvp4Pnu5XQIs5J+/4Kq+f4o39MQJn5OnVMxzcjYzE75SK2VrsrzLSgPXbH6YyDD91LQGXEYxDWs1vIMmb4p43I+48ujUmUEgKha626eNmeUm5ILsN+HfwD8/05LHBAgWqD8NKUFW44TVhgHcuc34cOoe2B+fqIjqg5x9LBeOQEBnxCjOXEaaZgkRWhQF7biWMwhUluMMdGBA=
+  - secure: VY8CcVl9kZ2eqHoGPcP3gNoZcbgReswWEHNJ0bOS0gqtAc506WLv8/1/wOyacJfzqGJaCOxtVVx9deOtZtSJM/xCPemDwI2jk7LVQtPBevyGkiwRuyR+HXy5mN9jW6LjwnVNIM8o0Oaosz4xbRk9GLMG+BsAGISnSqwNS0ZPPQ8dy7XT0PcpPN4TI1v9UFNve8N2pyAnQxnCd9XXse5jy7QSL2T5H7mueKmlUo1DOQw6Hqc72vC6mOG/0jRCFyuCxQrpPs+ggxTEyZFLzIj6Be4V5+BDRYADUALTvwLvgXZ8GF5iKFfz0iT9CYkuABGHzj6jzbXzmuTAhcCuAvaEGz6bNNG/QEQ246NNWiHDW6mJyQ4txmc8DIF0FnpXDq86km7jtJC/5vJI9WjOrFX99bZ5q7Ec+NiaOsfuL/t9Exo2CYpvt2m9Oz+NtEu1PSXpl7RWFgFKQwyQR1miZoYrhNr1/V2cNkRHvp4Pnu5XQIs5J+/4Kq+f4o39MQJn5OnVMxzcjYzE75SK2VrsrzLSgPXbH6YyDD91LQGXEYxDWs1vIMmb4p43I+48ujUmUEgKha626eNmeUm5ILsN+HfwD8/05LHBAgWqD8NKUFW44TVhgHcuc34cOoe2B+fqIjqg5x9LBeOQEBnxCjOXEaaZgkRWhQF7biWMwhUluMMdGBA=
+  - secure: FgEMIjSwvqqdn/xMmoffFvkTekglSoYQzERUkApLGzSE1YLjUBQRNCuDuIZzx8aur4Q1pHsaQ4fNkDuGZ9NMK626JmkOjVCz6yoQAcTcJgrjjjdeviyjMMSucZaGV3GPwWkuyeDh6+NnGGrCDobEYnZAC5M7iblQdg6ZS7ou2nu2tENWqsvGgND7zjxnG1sA/bjoZh2JApIVNinJWNfvb1AVYBD/NUwFrBIT5vxuztPsMhIxIE4j4X3pDomPjJduYnvFQcXFWMMAN8M3wPusm2ZGHc5GH3UE1boH9WqmQAIiYF2y1AnITItk/hYmeXoCSa+O2TkCoA8FuE7OA3ZL2J/sbv4YQzGBGVQTGsExy9Kr2a326XZLm8wNxt+2CjdderddF+UnH2p4AqafKBxVhytbIoeu8AMOvy1j/9twSO26iDHASewdIJEtaosSgvOVVli06mPSisb8Gy436QAhIa++WwS4Sw0Dsvlc4A/K7XottjrD3/L272zXdN/nCO3gyxJGWP390jIjermvNTBUJlTWymvyx7kNHxfdzq7boADIrgmenFsCPLvVhRaEJIwtgYz9UlIyOv475MzZ5vIhER+pNvanp7YVqYvxEuuriTtzsKlOx+c97CT6EQdrQsLjxoCD46HFlIYevK1ElV8BK8FZx7RWFtfiKnP9YPElQ98=
+  - secure: Kews6oymiEiedxls93E2cmX74aytepITr+zRUk+U8+ahSRn9+IXUiihuDvpyewx2KFcDEYVRMa6dj/GiVBSDA+5ahz2SBKUJllhhvd/upt5/wPgi1TV8xv37A5UtEK915ngTANfVBsi8GVIbBHImGkzCydWE9VWHNeQnwEfk/cskalDCZHbYkGM+Mf/JFd+yW6uqSB2gZOO5c2KP/Oln802nxc2S9G3oggLVSUwREIZmgR04a9RhHbG9bzJtrSsdflFT/Ky9kzr68xmgzQG68tUxP6DSVqHph25yyWnV6vTq0Q6+4F8QJ/xNfysObY0Xhxg0OCGy24Cu9eWGyNbajfjW1xE/MAbQYIg/ZfEu0x4BDvv+572Pnqvmre9MiCQ8xJn6LDUWw1rcSIaLB+hRRuXZmHn8ao4c6h6YS9owLhvOANkyjZ48u9gUMBHjStTxNB8NerqwiJuw4dxqJO7OgCP4M5xfIj3EuD6lpKZ2II5jtNknDvJwNI9zvb2DV0sycJc9XnLf76iUpbAoFDDPTKNRcaHG37kE/E5a5suyCdVB8ttTEJa70UARovCpFdr92yznbIK9O6bNV43Yn1KMRTKnxCTDeKVuf5NGagQggG3cH7msd0BAvr5EKrom8subWveig+FkyN0xlS+NieetIGaafGc1EB9OIJffFie8Das=
+  - secure: c38arS6BY3lXq8oYa6EKw0nDzHZXQd0zYMarDYYKDwH5aPzpr0WM2SfoJjuywCJVWxAoZinpYcoll+bRnlUwfC0ZbKSBPt6ZuoxG2b3+tPpmbFMg8I35ro1rjq6MiZdelGqSRY4CL25rgkBzbVBMIlRxhHuMcNz47jWSxlOLuKTjgkyolm23urfj0pd0DTXtYwXQV6Phm4JGv150KTnq4GvOKjp2vnlKmPxkE8hmRBkNZU3KBEs/xffY99Nh1MYoTFdemHx7vetvJCxjZ09K6DUstutMufRIMULnJA2/QxXrY/JCosFRVqNoUT8rLKdKpibMZf+KlR9u3aujuF1HjOqqEkWuvhO+hwnJ72k7Ystg6tRHL7ZrxPCqzgVAlmTPBEKpK/ynkT/QfO7JejFgSJKQtaUibD8+SONTuFDWC/HWUtCNPUKZiG8lOisWjcMz7Qi69sE6n5xc+IS+K0XuaagaLtaCO17wHdz2HsR58Wr5I5xkJRZaQ7s0e0nXg/VFLY9RDyzlw6V70B8rb9QMwTVPKIKtxznhPwJrbYVp1eMEsAvHd5k6q36sEkhq/NOmrG9Br8aHukquh6LvZbqlQDjeFJt43kNKb+dcc3Bf/WPItMUrumxstXxm0OP8ze4Zfh/MgHnq8mQniqYNySLVStADefJ4o8m3mYwHKpVDgmA=
+  - secure: oZdqb8cKoh28VwJ24Kq70cjcPLzfhriMez5Fkr4K6RE/iR1R/zgdabNPBDJlSR7Jx+N0hqw91cnK4bBeAlKU2J3XXViAby1lCgxcbZZ6SImJy62Wy3UpgbixRHZVTFQU3Zr0AGleR98XojVLGc9pVcEMb3JGKnIwThUW7z41A7h35E94qHOzR9r8b5Cb01X0Comj1hn/KQgVQ90yPjz0gy9lhk0WxpLDNwHZGFzS/Mi5U8bjk1U/hSZhvj1JBDFZ6tsEPBV825DJlKvQjKRfCVN0TVC2uTpoSxmmCdkIINiRTCaTjh5DqoiVcVQSOkYvYmXzNWihfNqDr5XSDkdh4a/AlRUYo5fXG7KGhZrRbZHbg9gVxcg/PsnK42uvdwe0liHSziajCy+Vzz2yWqOV3mOO7CPUMzr0yhiLefq9erbAN0pEXQAWoS9Ld/RLUuxj26roGR3Z5zzdpZabaNzIfGqfb5o+eNQYS62T9oWfogzBRq48J60fsF3S1MEKGIv2RU+3M+xPQOI7mlNQHSEwyZfND0V6EG/yyjgkC5jZKSTL7gz3lsimKCwYsWlKhNkVV+0ljMF7Olr51yafrG1fp/hsPybBX8Guo74X/Y0MhOOUV0U1QWyIwRQ9gDDpcJ7ov79DYs7X3ohThrJe0TiVn509Wc8/oVsj09murm6NjR0=

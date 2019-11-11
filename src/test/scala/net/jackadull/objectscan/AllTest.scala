@@ -3,7 +3,7 @@ package net.jackadull.objectscan
 import org.scalatest.{FreeSpec, Matchers}
 
 class AllTest extends FreeSpec with Matchers {
-  val all = All withinPackagePrefixes Seq("net.jackadull.objectscan")
+  val all:All = All.withinPackagePrefixes(Seq("net.jackadull.objectscan"))
 
   "All finds the only implemenation of a trait" in {
     all.of[TestTrait1].toSeq should be (Seq(TestTrait1))
