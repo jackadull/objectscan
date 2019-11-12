@@ -1,6 +1,6 @@
 import net.jackadull.build.dependencies.JackadullDependencies._
 
-lazy val jackadull = net.jackadull.build.JackadullBuild.onTravis(name = "objectscan", version = "0.4.0",
+lazy val jackadull = net.jackadull.build.JackadullBuild.onTravis(name = "objectscan", version = "0.4.1-SNAPSHOT",
   basePackage = "net.jackadull.objectscan", capitalizedIdentifier = "Objectscan")
 
 lazy val objectscanBuild:Project =
